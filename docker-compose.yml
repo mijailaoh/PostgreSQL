@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres_db
+    hostname: postgres_db
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./db.env
+    volumes:
+      - postgresdb:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin4
+    hostname: pg_admin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5433:80"
+    env_file:
+      - ./db.env
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+volumes:
+  pgadmin:
+  postgresdb:
+    driver: local
