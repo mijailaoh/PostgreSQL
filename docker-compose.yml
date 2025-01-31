@@ -1,17 +1,29 @@
 version: '3.8'
 
 services:
-  postgres:
-    container_name: postgres_db
-    hostname: postgres_db
+  postgres_prod:
+    container_name: postgres_prod
+    hostname: postgres_prod
     image: postgres
     restart: always
     ports:
       - "5432:5432"
     env_file:
-      - ./db.env
+      - ./db_prod.env  # Archivo .env para producción
     volumes:
-      - postgresdb:/var/lib/postgresql/data
+      - postgres_prod_db:/var/lib/postgresql/data
+
+  postgres_dev:
+    container_name: postgres_dev
+    hostname: postgres_dev
+    image: postgres
+    restart: always
+    ports:
+      - "5434:5432"  # Puerto para no confligir con postgres_prod
+    env_file:
+      - ./db_dev.env  # Archivo .env para desarrollo
+    volumes:
+      - postgres_dev_db:/var/lib/postgresql/data
 
   pgadmin:
     container_name: pgadmin4
@@ -21,11 +33,13 @@ services:
     ports:
       - "5433:80"
     env_file:
-      - ./db.env
+      - ./db_prod.env  # Se puede usar el mismo archivo .env para pgAdmin, si quieres que gestione ambos entornos
     volumes:
       - pgadmin:/var/lib/pgadmin
 
 volumes:
   pgadmin:
-  postgresdb:
+  postgres_prod_db:
+    driver: local
+  postgres_dev_db:
     driver: local
