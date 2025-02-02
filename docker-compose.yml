@@ -42,4 +42,4 @@ volumes:
   postgres_prod_db:
     driver: local
   postgres_dev_db:
-    driver: local
+    driver: local 
